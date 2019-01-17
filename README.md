@@ -10,4 +10,4 @@ Small python program, uses SOEA & MOEA to generate programs aimed at solving eff
 # To run
   - run main.py
 
-![](Desharnais Results.png)
+![](Desharnais_Results.png)
