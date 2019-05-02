@@ -8,10 +8,11 @@ import math
 import os
 import numpy
 import warnings
+
 warnings.filterwarnings("ignore")
 
 # open the arff file
-directory = os.getcwd().split('src')[0]
+directory = os.getcwd().split("src")[0]
 file_name = "\\china.arff"
 raw_data = open(directory + file_name).read()
 
@@ -46,8 +47,8 @@ for i in range(len(data)):
     final_data.append(test_dict)
 
 # split data into training and testData
-trainData = final_data[:int(len(data) * 0.8)]
-testData = final_data[int(len(data) * 0.8):]
+trainData = final_data[: int(len(data) * 0.8)]
+testData = final_data[int(len(data) * 0.8) :]
 
 # recommended in deap docs
 def protectedDiv(x, y):
@@ -56,24 +57,28 @@ def protectedDiv(x, y):
     except ZeroDivisionError:
         return 1
 
+
 def protectedSqrt(x):
-    if(x >= 0):
-        return x**(0.5)
+    if x >= 0:
+        return x ** (0.5)
     else:
         # how else to handle?
-        return  abs(x)**(0.5)
+        return abs(x) ** (0.5)
+
 
 def protectedLog10(x):
-    if(x <= 0.0):
+    if x <= 0.0:
         return 0
     else:
-       return math.log10(x)
+        return math.log10(x)
+
 
 def protectedLog2(x):
-    if(x <= 0.0):
+    if x <= 0.0:
         return 0
     else:
-       return math.log2(x)
+        return math.log2(x)
+
 
 def distance(x, y):
     if x >= y:
@@ -82,6 +87,7 @@ def distance(x, y):
         result = y - x
     return result
 
+
 # create primitve set and add operators
 primitive_set = PrimitiveSet("main", 12)
 primitive_set.addPrimitive(operator.add, 2)
@@ -89,7 +95,9 @@ primitive_set.addPrimitive(operator.mul, 2)
 primitive_set.addPrimitive(protectedSqrt, 1)
 primitive_set.addPrimitive(protectedLog2, 1)
 primitive_set.addPrimitive(protectedLog10, 1)
-primitive_set.addEphemeralConstant("ran%d" % random.randrange(10,1000), lambda: random.randrange(-1, 1))
+primitive_set.addEphemeralConstant(
+    "ran%d" % random.randrange(10, 1000), lambda: random.randrange(-1, 1)
+)
 primitive_set.addPrimitive(protectedDiv, 2)
 primitive_set.addPrimitive(operator.sub, 2)
 primitive_set.addPrimitive(math.sin, 1)
@@ -98,20 +106,29 @@ primitive_set.addPrimitive(math.cos, 1)
 # rename the arguments
 count = 0
 for key in attributes.keys():
-    argName = 'ARG%d' % count
-    primitive_set.renameArguments(**{argName : key})
+    argName = "ARG%d" % count
+    primitive_set.renameArguments(**{argName: key})
     count += 1
 
 # Minimise both the MAE and RMSE
 creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0))
 creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMin)
 
+
 def main(popSize, mutation, cx, nGens, tournSize):
     # popSize, mutation, cx, nGens, tournSize = 1000, 0.1, 0.75, 50, 7
     minTreeSize, maxTreeSize = 4, 14
     gp_toolbox = base.Toolbox()
-    gp_toolbox.register("expr", gp.genHalfAndHalf, pset=primitive_set, min_= minTreeSize, max_= maxTreeSize)
-    gp_toolbox.register("individual", tools.initIterate, creator.Individual, gp_toolbox.expr)
+    gp_toolbox.register(
+        "expr",
+        gp.genHalfAndHalf,
+        pset=primitive_set,
+        min_=minTreeSize,
+        max_=maxTreeSize,
+    )
+    gp_toolbox.register(
+        "individual", tools.initIterate, creator.Individual, gp_toolbox.expr
+    )
     gp_toolbox.register("population", tools.initRepeat, list, gp_toolbox.individual)
     gp_toolbox.register("compile", gp.compile, pset=primitive_set)
 
@@ -123,26 +140,27 @@ def main(popSize, mutation, cx, nGens, tournSize):
         differenceSquared = 0
         for i in range(len(trainData)):
             try:
-                currentValue = func(trainData[i]['AFP'],
-                                trainData[i]['Input'],
-                                trainData[i]['Output'],
-                                trainData[i]['Enquiry'],
-                                trainData[i]['File'],
-                                trainData[i]['Interface'],
-                                trainData[i]['PDR_AFP'],
-                                trainData[i]['PDR_UFP'],
-                                trainData[i]['NPDR_AFP'],
-                                trainData[i]['NPDU_UFP'],
-                                trainData[i]['Resource'],
-                                trainData[i]['Duration'])
+                currentValue = func(
+                    trainData[i]["AFP"],
+                    trainData[i]["Input"],
+                    trainData[i]["Output"],
+                    trainData[i]["Enquiry"],
+                    trainData[i]["File"],
+                    trainData[i]["Interface"],
+                    trainData[i]["PDR_AFP"],
+                    trainData[i]["PDR_UFP"],
+                    trainData[i]["NPDR_AFP"],
+                    trainData[i]["NPDU_UFP"],
+                    trainData[i]["Resource"],
+                    trainData[i]["Duration"],
+                )
             except:
                 print("integer too large!")
-                currentValue = 2,147,483,647
+                currentValue = 2, 147, 483, 647
 
-            absoluteError = distance(trainData[i]['Effort'], currentValue)
+            absoluteError = distance(trainData[i]["Effort"], currentValue)
             difference += absoluteError
             differenceSquared += pow(absoluteError, 2)
-
 
         mae = difference / len(trainData)
         rmse = protectedSqrt(differenceSquared / len(trainData))
@@ -153,32 +171,44 @@ def main(popSize, mutation, cx, nGens, tournSize):
     gp_toolbox.register("evaluate", evaluate, trainData=trainData)
     gp_toolbox.register("mate", gp.cxOnePoint)
     gp_toolbox.register("select", tools.selTournament, tournsize=tournSize)
-    gp_toolbox.register("expr_mut", gp.genHalfAndHalf, min_= minTreeSize, max_=maxTreeSize)
-    gp_toolbox.register("mutate", gp.mutUniform, expr=gp_toolbox.expr_mut, pset=primitive_set)
+    gp_toolbox.register(
+        "expr_mut", gp.genHalfAndHalf, min_=minTreeSize, max_=maxTreeSize
+    )
+    gp_toolbox.register(
+        "mutate", gp.mutUniform, expr=gp_toolbox.expr_mut, pset=primitive_set
+    )
 
     # https://deap.readthedocs.io/en/master/examples/gp_symbreg.html
     # limit overall tree height
-    gp_toolbox.decorate("mate", gp.staticLimit(key=operator.attrgetter("height"), max_value=17)) # static limit of 17 recomended in deap docs
-    gp_toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"), max_value=17))
+    gp_toolbox.decorate(
+        "mate", gp.staticLimit(key=operator.attrgetter("height"), max_value=17)
+    )  # static limit of 17 recomended in deap docs
+    gp_toolbox.decorate(
+        "mutate", gp.staticLimit(key=operator.attrgetter("height"), max_value=17)
+    )
 
     # register stats for fitness and size of each individual (tree)
     mstats = tools.Statistics(lambda individual: individual.fitness.values)
     # stats_size = tools.Statistics(len)
 
     # mstats = tools.MultiStatistics(fitness=stats_fit, size=stats_size)
-    mstats.register("avg", numpy.mean, axis = 0)
-    mstats.register("std", numpy.std, axis = 0)
-    mstats.register("min", numpy.min, axis = 0)
-    mstats.register("max", numpy.max, axis = 0)
+    mstats.register("avg", numpy.mean, axis=0)
+    mstats.register("std", numpy.std, axis=0)
+    mstats.register("min", numpy.min, axis=0)
+    mstats.register("max", numpy.max, axis=0)
     mstats.register("all_gens", deepcopy)
     log = tools.Logbook()
 
     pop = gp_toolbox.population(n=nGens)
     print("Starting GA")
     hof.clear()
-    pop, log = algorithms.eaMuPlusLambda(pop, gp_toolbox, popSize, popSize, cx, mutation, nGens, mstats, hof, True)
-    print("GA Complete after %d gens, tournament selection between %d, mutation rate of %f, crossover rate of %f" % (
-    nGens, tournSize, mutation, cx))
+    pop, log = algorithms.eaMuPlusLambda(
+        pop, gp_toolbox, popSize, popSize, cx, mutation, nGens, mstats, hof, True
+    )
+    print(
+        "GA Complete after %d gens, tournament selection between %d, mutation rate of %f, crossover rate of %f"
+        % (nGens, tournSize, mutation, cx)
+    )
 
     # Results Time
     # Calculate Correlation Coefficient
@@ -199,20 +229,22 @@ def main(popSize, mutation, cx, nGens, tournSize):
         answers.clear()
 
         for j in range(len(trainData)):
-            guess = hof_func(trainData[j]['AFP'],
-                                trainData[j]['Input'],
-                                trainData[j]['Output'],
-                                trainData[j]['Enquiry'],
-                                trainData[j]['File'],
-                                trainData[j]['Interface'],
-                                trainData[j]['PDR_AFP'],
-                                trainData[j]['PDR_UFP'],
-                                trainData[j]['NPDR_AFP'],
-                                trainData[j]['NPDU_UFP'],
-                                trainData[j]['Resource'],
-                                trainData[j]['Duration'])
+            guess = hof_func(
+                trainData[j]["AFP"],
+                trainData[j]["Input"],
+                trainData[j]["Output"],
+                trainData[j]["Enquiry"],
+                trainData[j]["File"],
+                trainData[j]["Interface"],
+                trainData[j]["PDR_AFP"],
+                trainData[j]["PDR_UFP"],
+                trainData[j]["NPDR_AFP"],
+                trainData[j]["NPDU_UFP"],
+                trainData[j]["Resource"],
+                trainData[j]["Duration"],
+            )
             guesses.append(guess)
-            answers.append(trainData[j]['Effort'])
+            answers.append(trainData[j]["Effort"])
 
         diff = 0
         diffSquared = 0
@@ -237,19 +269,21 @@ def main(popSize, mutation, cx, nGens, tournSize):
 
     for i in range(len(testData)):
         currentDataPoint = testData[i]
-        answer = currentDataPoint['Effort']
-        guess = final_function(currentDataPoint['AFP'],
-                               currentDataPoint['Input'],
-                               currentDataPoint['Output'],
-                               currentDataPoint['Enquiry'],
-                               currentDataPoint['File'],
-                               currentDataPoint['Interface'],
-                               currentDataPoint['PDR_AFP'],
-                               currentDataPoint['PDR_UFP'],
-                               currentDataPoint['NPDR_AFP'],
-                               currentDataPoint['NPDU_UFP'],
-                               currentDataPoint['Resource'],
-                               currentDataPoint['Duration'])
+        answer = currentDataPoint["Effort"]
+        guess = final_function(
+            currentDataPoint["AFP"],
+            currentDataPoint["Input"],
+            currentDataPoint["Output"],
+            currentDataPoint["Enquiry"],
+            currentDataPoint["File"],
+            currentDataPoint["Interface"],
+            currentDataPoint["PDR_AFP"],
+            currentDataPoint["PDR_UFP"],
+            currentDataPoint["NPDR_AFP"],
+            currentDataPoint["NPDU_UFP"],
+            currentDataPoint["Resource"],
+            currentDataPoint["Duration"],
+        )
         final_answers.append(answer)
         final_guesses.append(guess)
 
@@ -272,6 +306,7 @@ def main(popSize, mutation, cx, nGens, tournSize):
     print("RMSE for Best Individual on test set = %f\n" % (final_rmse))
 
     return final_mae, final_mae_diff, final_rmse, final_rmse_diff, final_cc, hof[0]
+
 
 if __name__ == "__main__":
     main()

@@ -14,25 +14,71 @@ tournSize = int(popSize / 4)
 
 # # 20 / 80 split
 print("China Dataset - Single Objective")
-china_mae, china_mae_diff, china_rmse, china_rmse_diff, china_cc, china_tree = GP_CHINA_MAIN(popSize, mutation, cx, nGens, tournSize)
+china_mae, china_mae_diff, china_rmse, china_rmse_diff, china_cc, china_tree = GP_CHINA_MAIN(
+    popSize, mutation, cx, nGens, tournSize
+)
 print("Desharnais Dataset - Single Objective")
-desharnais_mae, desharnais_mae_diff, desharnais_rmse, desharnais_rmse_diff, desharnais_cc,  desharnais_tree = GP_DESHARNAIS_MAIN(popSize, mutation, cx, nGens, tournSize)
+desharnais_mae, desharnais_mae_diff, desharnais_rmse, desharnais_rmse_diff, desharnais_cc, desharnais_tree = GP_DESHARNAIS_MAIN(
+    popSize, mutation, cx, nGens, tournSize
+)
 print("China Dataset - Multi Objective")
-china_mo_mae,china_mo_mae_diff, china_mo_rmse,china_mo_rmse_diff, china_mo_cc, china_mo_tree = GP_CHINA_MO_MAIN(popSize, mutation, cx, nGens, tournSize)
+china_mo_mae, china_mo_mae_diff, china_mo_rmse, china_mo_rmse_diff, china_mo_cc, china_mo_tree = GP_CHINA_MO_MAIN(
+    popSize, mutation, cx, nGens, tournSize
+)
 print("Desharnais Dataset - Multi Objective")
-desharnais_mo_mae,desharnais_mo_mae_diff, desharnais_mo_rmse, desharnais_mo_rmse_diff, desharnais_mo_cc, desharnais_mo_tree = GP_DESHARNAIS_MO_MAIN(popSize, mutation, cx, nGens, tournSize)
+desharnais_mo_mae, desharnais_mo_mae_diff, desharnais_mo_rmse, desharnais_mo_rmse_diff, desharnais_mo_cc, desharnais_mo_tree = GP_DESHARNAIS_MO_MAIN(
+    popSize, mutation, cx, nGens, tournSize
+)
 
-desharnais_lr_mae, desharnais_lr_rmse, desharnais_lr_cc, desharnais_gaussian_mae, desharnais_gaussian_rmse ,desharnais_gaussian_cc = 2101.555, 2633.9681, 0.6957, 1911.947, 2637.4246, 0.6612
-china_lr_mae, china_lr_rmse, china_lr_cc, china_gaussian_mae , china_gaussian_rmse, china_gaussian_cc = 1796.1514, 3340.4831, 0.7273, 3491.4531, 4300.983, 0.5358
+desharnais_lr_mae, desharnais_lr_rmse, desharnais_lr_cc, desharnais_gaussian_mae, desharnais_gaussian_rmse, desharnais_gaussian_cc = (
+    2101.555,
+    2633.9681,
+    0.6957,
+    1911.947,
+    2637.4246,
+    0.6612,
+)
+china_lr_mae, china_lr_rmse, china_lr_cc, china_gaussian_mae, china_gaussian_rmse, china_gaussian_cc = (
+    1796.1514,
+    3340.4831,
+    0.7273,
+    3491.4531,
+    4300.983,
+    0.5358,
+)
 
-print("Desharnais single objective - MAE : %f , RMSE = %f, Correlation Coefficient : %f" % (desharnais_mae, desharnais_rmse, desharnais_cc))
-print("China single objective - MAE : %f , RMSE = %f,  Correlation Coefficient : %f" % (china_mae, china_rmse, china_cc))
-print("Desharnais multi objective - MAE : %f , RMSE = %f,  Correlation Coefficient : %f" % (desharnais_mo_mae, desharnais_mo_rmse, desharnais_mo_cc))
-print("China multi objective - MAE : %f , RMSE = %f, Correlation Coefficient : %f" % (china_mo_mae, china_mo_rmse, china_mo_cc))
-print("Desharnais Linear Regression - MAE : %f , RMSE = %f, Correlation Coefficient : %f" % (desharnais_lr_mae, desharnais_lr_rmse, desharnais_lr_cc))
-print("China Linear Regression - MAE : %f , RMSE = %f, Correlation Coefficient : %f" % (china_lr_mae, china_lr_rmse, china_lr_cc))
-print("Desharnais Gaussian - MAE : %f , RMSE = %f, Correlation Coefficient : %f" % (desharnais_gaussian_mae, desharnais_gaussian_rmse, desharnais_gaussian_cc))
-print("China Linear Gaussian - MAE : %f , RMSE = %f, Correlation Coefficient : %f" % (china_gaussian_mae, china_gaussian_rmse, china_gaussian_cc))
+print(
+    "Desharnais single objective - MAE : %f , RMSE = %f, Correlation Coefficient : %f"
+    % (desharnais_mae, desharnais_rmse, desharnais_cc)
+)
+print(
+    "China single objective - MAE : %f , RMSE = %f,  Correlation Coefficient : %f"
+    % (china_mae, china_rmse, china_cc)
+)
+print(
+    "Desharnais multi objective - MAE : %f , RMSE = %f,  Correlation Coefficient : %f"
+    % (desharnais_mo_mae, desharnais_mo_rmse, desharnais_mo_cc)
+)
+print(
+    "China multi objective - MAE : %f , RMSE = %f, Correlation Coefficient : %f"
+    % (china_mo_mae, china_mo_rmse, china_mo_cc)
+)
+print(
+    "Desharnais Linear Regression - MAE : %f , RMSE = %f, Correlation Coefficient : %f"
+    % (desharnais_lr_mae, desharnais_lr_rmse, desharnais_lr_cc)
+)
+print(
+    "China Linear Regression - MAE : %f , RMSE = %f, Correlation Coefficient : %f"
+    % (china_lr_mae, china_lr_rmse, china_lr_cc)
+)
+print(
+    "Desharnais Gaussian - MAE : %f , RMSE = %f, Correlation Coefficient : %f"
+    % (desharnais_gaussian_mae, desharnais_gaussian_rmse, desharnais_gaussian_cc)
+)
+print(
+    "China Linear Gaussian - MAE : %f , RMSE = %f, Correlation Coefficient : %f"
+    % (china_gaussian_mae, china_gaussian_rmse, china_gaussian_cc)
+)
 
 # # china plot
 # plt.figure()
@@ -83,19 +129,42 @@ plt.suptitle("CHINA Results")
 plt.title("Population Size = %d, Number of Generations = %d" % (popSize, nGens))
 plt.xlabel("RMSE")
 plt.ylabel("MAE")
-so = plt.errorbar(china_rmse, china_mae, xerr = [[china_rmse_diff], [china_rmse_diff]], yerr = [[china_mae_diff], [china_mae_diff]], fmt='x', markersize = 6, capsize=8)
-mo = plt.errorbar(china_mo_rmse, china_mo_mae, xerr = [[china_mo_rmse_diff], [china_mo_rmse_diff]], yerr = [[china_mo_mae_diff], [china_mo_mae_diff]], fmt='o', markersize = 6, capsize=8)
-lr = plt.scatter(china_lr_rmse, china_lr_mae, marker='P', color='y')
-gaus = plt.scatter(china_gaussian_rmse, china_gaussian_mae, marker='^', color='c')
+so = plt.errorbar(
+    china_rmse,
+    china_mae,
+    xerr=[[china_rmse_diff], [china_rmse_diff]],
+    yerr=[[china_mae_diff], [china_mae_diff]],
+    fmt="x",
+    markersize=6,
+    capsize=8,
+)
+mo = plt.errorbar(
+    china_mo_rmse,
+    china_mo_mae,
+    xerr=[[china_mo_rmse_diff], [china_mo_rmse_diff]],
+    yerr=[[china_mo_mae_diff], [china_mo_mae_diff]],
+    fmt="o",
+    markersize=6,
+    capsize=8,
+)
+lr = plt.scatter(china_lr_rmse, china_lr_mae, marker="P", color="y")
+gaus = plt.scatter(china_gaussian_rmse, china_gaussian_mae, marker="^", color="c")
 
 plt.xlim(left=0)
 plt.ylim(bottom=0)
-plt.legend((so, mo, lr, gaus),
-                   ('Single Objective Symbolic Regression', 'Multi Objective Symbolic Regression', 'Linear Regression', 'Gaussian Processes'),
-                   scatterpoints=1,
-                   loc='upper left',
-                   ncol=1,
-                   fontsize=8)
+plt.legend(
+    (so, mo, lr, gaus),
+    (
+        "Single Objective Symbolic Regression",
+        "Multi Objective Symbolic Regression",
+        "Linear Regression",
+        "Gaussian Processes",
+    ),
+    scatterpoints=1,
+    loc="upper left",
+    ncol=1,
+    fontsize=8,
+)
 
 # plt.errorbar(limit, GA_X, GA_E, linestyle='-', marker='^', label='GA Spread')
 
@@ -104,18 +173,43 @@ plt.suptitle("DESHARNAIS Results")
 plt.title("Population Size = %d, Number of Generations = %d" % (popSize, nGens))
 plt.xlabel("RMSE")
 plt.ylabel("MAE")
-so = plt.errorbar(desharnais_rmse, desharnais_mae, xerr = [[desharnais_rmse_diff], [desharnais_rmse_diff]], yerr = [[desharnais_mae_diff], [desharnais_mae_diff]], fmt='x', markersize = 6, capsize=8)
-mo = plt.errorbar(desharnais_mo_rmse, desharnais_mo_mae, xerr = [[desharnais_mo_rmse_diff], [desharnais_mo_rmse_diff]], yerr = [[desharnais_mo_mae_diff], [desharnais_mo_mae_diff]], fmt='o', markersize = 6, capsize=8)
-lr = plt.scatter(desharnais_lr_rmse, desharnais_lr_mae, marker='P', color='y')
-gaus = plt.scatter(desharnais_gaussian_rmse, desharnais_gaussian_mae, marker='^', color='c')
+so = plt.errorbar(
+    desharnais_rmse,
+    desharnais_mae,
+    xerr=[[desharnais_rmse_diff], [desharnais_rmse_diff]],
+    yerr=[[desharnais_mae_diff], [desharnais_mae_diff]],
+    fmt="x",
+    markersize=6,
+    capsize=8,
+)
+mo = plt.errorbar(
+    desharnais_mo_rmse,
+    desharnais_mo_mae,
+    xerr=[[desharnais_mo_rmse_diff], [desharnais_mo_rmse_diff]],
+    yerr=[[desharnais_mo_mae_diff], [desharnais_mo_mae_diff]],
+    fmt="o",
+    markersize=6,
+    capsize=8,
+)
+lr = plt.scatter(desharnais_lr_rmse, desharnais_lr_mae, marker="P", color="y")
+gaus = plt.scatter(
+    desharnais_gaussian_rmse, desharnais_gaussian_mae, marker="^", color="c"
+)
 plt.xlim(left=0)
 plt.ylim(bottom=0)
-plt.legend((so, mo, lr, gaus),
-                   ('Single Objective Symbolic Regression', 'Multi Objective Symbolic Regression', 'Linear Regression', 'Gaussian Processes'),
-                   scatterpoints=1,
-                   loc='upper left',
-                   ncol=1,
-                   fontsize=8)
+plt.legend(
+    (so, mo, lr, gaus),
+    (
+        "Single Objective Symbolic Regression",
+        "Multi Objective Symbolic Regression",
+        "Linear Regression",
+        "Gaussian Processes",
+    ),
+    scatterpoints=1,
+    loc="upper left",
+    ncol=1,
+    fontsize=8,
+)
 
 # plt.errorbar(limit, GA_X, GA_E, linestyle='-', marker='^', label='GA Spread')
 
